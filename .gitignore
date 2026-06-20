@@ -1,0 +1,37 @@
+# ── macOS junk ───────────────────────────────────────────────
+.DS_Store
+**/.DS_Store
+
+# ── Build output (regenerable; never commit signed binaries) ──
+native/build/
+*.app
+*.dSYM
+# legacy Go-era output (kept so old trees stay clean)
+/bin/
+/dist/
+*.test
+coverage.out
+
+# ── Private working memory & internal docs (NEVER publish) ───
+# These hold the developer's email, name, location, chat history,
+# and internal vulnerability notes. They must never reach GitHub.
+.claude/
+CLAUDE.md
+AUDIT.md
+PLAN-2.0.md
+
+# ── Design mockups (contain machine-specific demo data) ──────
+design/
+*.dc.html
+
+# ── Local user config / personal denylist (machine-specific) ─
+*.local
+.maccleaner/
+denylist.json
+
+# ── Internal security audits — NEVER publish (hold vuln notes + real paths) ─
+*cold-audit*.md
+MacCleaner-cold-audit-*.md
+
+# ── Internal publishing guide (contains the maintainer's local path) ─
+GITHUB_PUBLISH_GUIDE.md

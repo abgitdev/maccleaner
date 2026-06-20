@@ -1,0 +1,54 @@
+name: release
+
+# Pushing a tag like v1.1 builds + tests, then publishes a source-only GitHub Release.
+# No compiled binary is attached on purpose: a signed .app embeds the signer's Apple ID
+# (email + name) in its code signature, so MacCleaner is distributed as source.
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build, test & publish release
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select newest Xcode
+        run: |
+          latest=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          echo "Selecting $latest"
+          sudo xcode-select -s "$latest/Contents/Developer"
+          swiftc --version
+
+      - name: Compile app + helper (unsigned)
+        working-directory: native
+        run: |
+          set -euo pipefail
+          mkdir -p build/MacCleaner.app/Contents/MacOS
+          swiftc -O -parse-as-library \
+            -framework SwiftUI -framework AppKit -framework IOKit -framework ServiceManagement \
+            -o build/MacCleaner.app/Contents/MacOS/MacCleaner \
+            Sources/*.swift Sources/Shared/*.swift
+          swiftc -O \
+            -o build/MacCleaner.app/Contents/MacOS/com.maccleaner.helper \
+            Sources/Helper/*.swift Sources/Shared/*.swift Sources/SafetyPolicy.swift
+
+      - name: Run safety-core test suite
+        working-directory: native
+        run: ./test.sh
+
+      - name: Publish GitHub Release (source-only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "MacCleaner ${GITHUB_REF_NAME}" \
+            --notes-file .github/RELEASE_NOTES.md

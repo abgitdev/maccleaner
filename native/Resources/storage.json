@@ -1,0 +1,121 @@
+{
+  "_comment": "Adaptive storage map. Generic categories present on most Macs — sizes are computed live and only non-empty ones are shown, so the breakdown adapts to whatever is actually on the machine. Read-only: this drives the dashboard chart, never deletion.",
+  "categories": [
+    {
+      "id": "applications",
+      "name": "Applications",
+      "color": "4a90ff",
+      "icon": "square.grid.2x2.fill",
+      "paths": ["/Applications", "~/Applications"]
+    },
+    {
+      "id": "media",
+      "name": "Photos & Media",
+      "color": "ff7eb6",
+      "icon": "photo.fill",
+      "paths": ["~/Pictures", "~/Movies", "~/Music"]
+    },
+    {
+      "id": "ai-models",
+      "name": "AI models & caches",
+      "color": "bf7bff",
+      "icon": "brain",
+      "paths": [
+        "~/.cache/huggingface",
+        "~/.ollama",
+        "~/.cache/torch",
+        "~/.cache/lm-studio",
+        "~/.lmstudio",
+        "~/.keras",
+        "~/.cache/whisper"
+      ]
+    },
+    {
+      "id": "developer",
+      "name": "Developer",
+      "color": "ff9f43",
+      "icon": "hammer.fill",
+      "paths": [
+        "~/Library/Developer",
+        "~/.gradle",
+        "~/.cargo",
+        "~/.rustup",
+        "~/go/pkg",
+        "~/.npm",
+        "~/.cache/go-build",
+        "~/.m2",
+        "~/.cocoapods",
+        "~/.pub-cache"
+      ]
+    },
+    {
+      "id": "code-projects",
+      "name": "Code & projects",
+      "color": "5ac8fa",
+      "icon": "chevron.left.forwardslash.chevron.right",
+      "paths": [
+        "~/Developer", "~/Projects", "~/Code", "~/code", "~/dev", "~/git",
+        "~/repos", "~/Repos", "~/workspace", "~/src", "~/go/src"
+      ]
+    },
+    {
+      "id": "virtual-machines",
+      "name": "Virtual machines",
+      "color": "a368fc",
+      "icon": "cube.transparent.fill",
+      "paths": [
+        "~/Parallels", "~/Virtual Machines.localized", "~/VirtualBox VMs",
+        "~/.docker", "~/.orbstack", "~/.colima", "~/.lima", "~/.utm", "~/Library/Containers/com.utmapp.UTM"
+      ]
+    },
+    {
+      "id": "cloud-storage",
+      "name": "Cloud storage (local)",
+      "color": "34c0eb",
+      "icon": "icloud.fill",
+      "paths": ["~/Library/Mobile Documents", "~/Library/CloudStorage"]
+    },
+    {
+      "id": "mail-messages",
+      "name": "Mail & Messages",
+      "color": "ff9ec4",
+      "icon": "envelope.fill",
+      "paths": ["~/Library/Mail", "~/Library/Messages"]
+    },
+    {
+      "id": "documents",
+      "name": "Documents & Desktop",
+      "color": "2fd9c4",
+      "icon": "doc.fill",
+      "paths": ["~/Documents", "~/Desktop"]
+    },
+    {
+      "id": "downloads",
+      "name": "Downloads",
+      "color": "ffb340",
+      "icon": "arrow.down.circle.fill",
+      "paths": ["~/Downloads"]
+    },
+    {
+      "id": "caches-logs",
+      "name": "Caches & Logs",
+      "color": "2fd98a",
+      "icon": "tray.full.fill",
+      "paths": ["~/Library/Caches", "~/Library/Logs"]
+    },
+    {
+      "id": "app-support",
+      "name": "App data & containers",
+      "color": "7c8cff",
+      "icon": "shippingbox.fill",
+      "paths": ["~/Library/Application Support", "~/Library/Containers", "~/Library/Group Containers"]
+    },
+    {
+      "id": "trash",
+      "name": "Trash",
+      "color": "ff5c5c",
+      "icon": "trash.fill",
+      "paths": ["~/.Trash"]
+    }
+  ]
+}

@@ -1,0 +1,375 @@
+{
+  "rules": [
+    {
+      "pattern": "/System/Library/AssetsV2",
+      "verdict": "never",
+      "label": "OS asset store (AssetsV2)",
+      "reason": "Directory where the OS stores downloaded assets (wallpapers, models, fonts). System-managed, regenerated on demand — manual cleanup is pointless and risky.",
+      "priority": 1000
+    },
+    {
+      "pattern": "bnns_program.bnnsir",
+      "verdict": "never",
+      "label": "Apple Neural Engine cache",
+      "reason": "Compiled neural-net program for the Neural Engine inside Apple's system caches (Spotlight/duetexpertd). System-owned, OS-managed.",
+      "priority": 995
+    },
+    {
+      "pattern": "/site-packages/mlx/",
+      "verdict": "never",
+      "label": "Installed MLX package binary",
+      "reason": "Contents of the installed MLX package (including mlx.metallib). Deleting it breaks MLX and any app that depends on it, and it does not regenerate on its own.",
+      "priority": 990
+    },
+    {
+      "pattern": "/System/",
+      "verdict": "never",
+      "label": "macOS system volume (SIP)",
+      "reason": "The OS itself on a read-only volume protected by SIP. Any change breaks boot/updates. Match as a prefix, excluding the /System/Volumes/Data/ firmlink (which holds normal user data).",
+      "priority": 985
+    },
+    {
+      "pattern": "com.apple.e5rt.e5bundlecache",
+      "verdict": "discretion",
+      "label": "Apple Neural Engine (ANE) cache",
+      "reason": "Regenerable cache of ANE-compiled models; can grow to hundreds of GB. Deletion is safe but triggers a one-time recompile (CPU/battery). Show it and let the user choose.",
+      "priority": 980
+    },
+    {
+      "pattern": "/Library/Caches/com.apple.",
+      "verdict": "never",
+      "label": "Apple system cache",
+      "reason": "Caches for macOS services (Spotlight, duetexpertd, parsecd, etc.). Managed by the OS and running processes — deletion breaks system behavior. Do not touch.",
+      "priority": 975
+    },
+    {
+      "pattern": "onDeviceCompilationCaches",
+      "verdict": "never",
+      "label": "On-device speech ML cache (CoreSpeech)",
+      "reason": "Compiled speech-recognition/dictation models (CoreSpeech). OS-managed; deletion causes a heavy recompile and degraded dictation.",
+      "priority": 970
+    },
+    {
+      "pattern": ".bnnsir",
+      "verdict": "never",
+      "label": "Compiled ANE program",
+      "reason": "Neural net compiled for the Apple Neural Engine in Apple's system ML caches. Files are protected even from reading; do not touch.",
+      "priority": 965
+    },
+    {
+      "pattern": "/private/var/MobileAsset",
+      "verdict": "never",
+      "label": "OS assets (Siri, voices, ML models)",
+      "reason": "Assets the OS downloads and removes itself (Siri, voices, dictionaries, models). Managed by mobileassetd; deleting an active voice breaks accessibility.",
+      "priority": 960
+    },
+    {
+      "pattern": "/private/var/db",
+      "verdict": "never",
+      "label": "macOS system databases",
+      "reason": "OS databases: launchd, dyld, configs, licenses, TCC permissions. Deletion breaks services and privacy settings.",
+      "priority": 955
+    },
+    {
+      "pattern": "/System/Library/AssetsV2/",
+      "verdict": "never",
+      "label": "OS asset store",
+      "reason": "Backup safeguard for AssetsV2 with a trailing slash.",
+      "priority": 950
+    },
+    {
+      "pattern": "/Library/Apple",
+      "verdict": "never",
+      "label": "Apple system components",
+      "reason": "Apple system libraries and agents outside the user's ~/Library. Part of the macOS install, protected by the OS.",
+      "priority": 945
+    },
+    {
+      "pattern": "/.codex/sessions/",
+      "verdict": "never",
+      "label": "Codex session history",
+      "reason": "Full agent session transcripts (rollout-*.jsonl). Personal data plus resume state — irreversible. Do not touch.",
+      "priority": 940
+    },
+    {
+      "pattern": "/.codex/history.jsonl",
+      "verdict": "never",
+      "label": "Codex command history",
+      "reason": "Log of your Codex inputs (personal data, history, and resume). Auto-deletion is not allowed.",
+      "priority": 935
+    },
+    {
+      "pattern": "/.local/share/claude/versions/",
+      "verdict": "discretion",
+      "label": "Claude runtime versions",
+      "reason": "Old Claude Code versions clean up themselves, but the active version sits alongside — delete the wrong one and you break the running app. Manual only.",
+      "priority": 930
+    },
+    {
+      "pattern": "/.local/share/claude/",
+      "verdict": "never",
+      "label": "Active Claude runtime",
+      "reason": "Binary and data of the running Claude Code (ClaudeCode.app, active version). Deleting it breaks the running tool.",
+      "priority": 925
+    },
+    {
+      "pattern": "/.codex/logs_2.sqlite",
+      "verdict": "discretion",
+      "label": "Codex log",
+      "reason": "Codex log (~136 MB). Deleting it loses your work history. User's discretion.",
+      "priority": 920
+    },
+    {
+      "pattern": "/.codex/archived_sessions/",
+      "verdict": "discretion",
+      "label": "Codex session archive",
+      "reason": "Archive of past sessions (rollout-*.jsonl). Conversation history is personal. Manual only.",
+      "priority": 915
+    },
+    {
+      "pattern": "/site-packages/",
+      "verdict": "never",
+      "label": "Installed Python package",
+      "reason": "Installed libraries (.py, .so, .dylib, .metallib). Deleting files breaks imports and dependencies. Clean up only via pip uninstall.",
+      "priority": 910
+    },
+    {
+      "pattern": ".app/Contents/",
+      "verdict": "never",
+      "label": ".app bundle internals",
+      "reason": "Guts of an installed app (binary, resources, frameworks). Deleting any file breaks the signature and launch. Only the whole .app can be removed.",
+      "priority": 905
+    },
+    {
+      "pattern": ".framework/",
+      "verdict": "never",
+      "label": "Framework",
+      "reason": "Contents of a .framework — a shared library that apps and the OS depend on. Deletion breaks everything linked against it.",
+      "priority": 900
+    },
+    {
+      "pattern": ".metallib",
+      "verdict": "never",
+      "label": "Compiled Metal shaders",
+      "reason": "Compiled Metal GPU shaders inside a package/bundle. Deleting them crashes the software that loads them (e.g. MLX) at launch.",
+      "priority": 895
+    },
+    {
+      "pattern": "/Cellar/",
+      "verdict": "never",
+      "label": "Installed Homebrew package",
+      "reason": "The Homebrew Cellar holds installed formulae. Deleting files breaks the package and dependencies. Clean up via brew uninstall / brew cleanup.",
+      "priority": 890
+    },
+    {
+      "pattern": "/.codex/",
+      "verdict": "discretion",
+      "label": "Codex app data",
+      "reason": "Configs, auth.json, sqlite databases, memory. Lots of personal and work data. Not safe by default.",
+      "priority": 820
+    },
+    {
+      "pattern": "/.cache/codex-runtimes/",
+      "verdict": "discretion",
+      "label": "Codex CLI runtimes",
+      "reason": "Codex runtime binaries (~1.3 GB). Re-downloadable but heavy. If you use Codex actively, you'll have to wait for the download. When in doubt, leave them.",
+      "priority": 810
+    },
+    {
+      "pattern": "/.npm/_cacache/",
+      "verdict": "safe",
+      "label": "npm cache",
+      "reason": "Cache of downloaded npm packages. Doesn't touch project node_modules; npm restores it on install. Pure junk (offline — you'll have to re-download).",
+      "priority": 760
+    },
+    {
+      "pattern": "/.cache/pip/",
+      "verdict": "safe",
+      "label": "pip download cache",
+      "reason": "Cache of downloaded and locally built wheel packages. Doesn't affect installed packages; pip re-downloads (and rebuilds if needed) on the next install.",
+      "priority": 755
+    },
+    {
+      "pattern": "/usr/local/lib/",
+      "verdict": "discretion",
+      "label": "System/user libraries",
+      "reason": "Shared libraries that installed software links against. Could be junk from removed packages, or an active dependency. Don't delete without checking.",
+      "priority": 750
+    },
+    {
+      "pattern": "/.cache/huggingface/",
+      "verdict": "discretion",
+      "label": "Hugging Face model cache",
+      "reason": "Downloaded HF models/datasets (often tens of GB). Re-downloadable only with internet; in offline/gated cases recovery is impossible. Show it and let the user choose.",
+      "priority": 745
+    },
+    {
+      "pattern": "/.cache/torch/",
+      "verdict": "safe",
+      "label": "PyTorch Hub cache",
+      "reason": "Downloaded PyTorch Hub weights/checkpoints. Re-downloaded on demand. Files can be large — re-downloading costs bandwidth.",
+      "priority": 740
+    },
+    {
+      "pattern": "/Library/Developer/Xcode/DerivedData/",
+      "verdict": "safe",
+      "label": "Xcode DerivedData",
+      "reason": "Cache of Xcode intermediate builds and indexes. Recreated on the next build (locked while Xcode is running). Downside: the first build is slower and autocomplete drops out temporarily.",
+      "priority": 720
+    },
+    {
+      "pattern": "/.build/checkouts/",
+      "verdict": "discretion",
+      "label": "SwiftPM source checkouts",
+      "reason": "Not build artifacts but git sources of dependencies inside .build. Re-fetched on resolve (needs internet and versions from Package.resolved). Separately — user's discretion.",
+      "priority": 700
+    },
+    {
+      "pattern": "/.build-xcode/",
+      "verdict": "discretion",
+      "label": "SwiftPM (Xcode) build output",
+      "reason": "Non-standard SwiftPM build folder. Regenerated by rebuilding, but the name is custom and matched by substring — better to show it and let the user choose (offline/edited dependencies).",
+      "priority": 695
+    },
+    {
+      "pattern": "/.build/",
+      "verdict": "safe",
+      "label": "SwiftPM build output",
+      "reason": "SwiftPM build folder (objects, .pack, indexes). Recreated via swift build / Xcode. Downside: the first rebuild is slower and checkouts are re-fetched.",
+      "priority": 680
+    },
+    {
+      "pattern": "/CMakeFiles/",
+      "verdict": "safe",
+      "label": "CMake/Ninja build output",
+      "reason": "Intermediate files from the CMake build generator (.o, dependencies). Recreated on cmake/ninja. Downside: the next build is from scratch.",
+      "priority": 670
+    },
+    {
+      "pattern": "/target/debug/",
+      "verdict": "safe",
+      "label": "Rust/Java build output",
+      "reason": "Build output folder (Rust cargo, Maven/sbt). Narrow path /target/debug/ so arbitrary target folders aren't hit. Downside: a full rebuild is slower.",
+      "priority": 665
+    },
+    {
+      "pattern": "/.gradle/",
+      "verdict": "safe",
+      "label": "Gradle cache",
+      "reason": "Gradle build cache (Java/Android/Kotlin). Restored on the next build. Downside: dependencies are re-downloaded and the first build is slower.",
+      "priority": 660
+    },
+    {
+      "pattern": "/__pycache__/",
+      "verdict": "safe",
+      "label": "Python bytecode cache",
+      "reason": "Compiled Python bytecode (.pyc) in the __pycache__ directory. Recreated automatically on the next run. Completely safe to delete.",
+      "priority": 655
+    },
+    {
+      "pattern": "/node_modules/",
+      "verdict": "discretion",
+      "label": "npm dependencies",
+      "reason": "npm dependencies. Restored via npm install only with a package.json+lockfile and a network; linked/patched/private packages may not come back. Show it and let the user choose.",
+      "priority": 650
+    },
+    {
+      "pattern": ".dSYM",
+      "verdict": "discretion",
+      "label": "Debug symbols",
+      "reason": "Symbol files for decoding crash logs. Safe to delete inside .build/DerivedData, but next to a release/archive they're needed to analyze crashes. Without build context — user's discretion.",
+      "priority": 645
+    },
+    {
+      "pattern": "/Library/Caches/",
+      "verdict": "discretion",
+      "label": "Third-party app cache",
+      "reason": "Cache of installed non-Apple apps. Usually regenerated, but may contain active session/work data. Safer as user's discretion, not safe.",
+      "priority": 400
+    },
+    {
+      "pattern": "/.iso",
+      "verdict": "discretion",
+      "label": "Installer image",
+      "reason": "An .iso install image. Junk only if the app is already installed — check manually, do not auto-delete.",
+      "priority": 350
+    },
+    {
+      "pattern": ".iso",
+      "verdict": "discretion",
+      "label": "Installer image",
+      "reason": "An install image. Junk only if the app is already installed — check manually, do not auto-delete.",
+      "priority": 345
+    },
+    {
+      "pattern": ".dmg",
+      "verdict": "discretion",
+      "label": "Installer image",
+      "reason": "An installer disk image. Safe to delete if the app is already installed. Check yourself — not safe blindly.",
+      "priority": 340
+    },
+    {
+      "pattern": ".pkg",
+      "verdict": "discretion",
+      "label": "Installer package",
+      "reason": "An install package. Usually unneeded after installing, but decide manually — not safe automatically.",
+      "priority": 335
+    },
+    {
+      "pattern": "/Downloads/",
+      "verdict": "discretion",
+      "label": "User download",
+      "reason": "Everything in Downloads is something you downloaded yourself. May be needed. Never safe automatically.",
+      "priority": 330
+    },
+    {
+      "pattern": "/versions/",
+      "verdict": "discretion",
+      "label": "App version folders",
+      "reason": "Old versions can be cleaned, but one of them is active. Auto-deletion is risky — user's discretion.",
+      "priority": 300
+    },
+    {
+      "pattern": "/.Trash/",
+      "verdict": "discretion",
+      "label": "Trash",
+      "reason": "Things you already threw out. Emptying makes sense, but it's your call — the cleaner shouldn't empty it itself.",
+      "priority": 250
+    },
+    {
+      "pattern": ".log",
+      "verdict": "discretion",
+      "label": "Log file",
+      "reason": "Logs are usually regenerated, but may contain history/context. Decide manually, not safe blindly.",
+      "priority": 200
+    },
+    {
+      "pattern": "com.apple.wallpaper",
+      "verdict": "never",
+      "label": "macOS wallpapers/screen savers",
+      "reason": "Video wallpapers (aerials) — system-managed, re-download themselves.",
+      "priority": 942
+    },
+    {
+      "pattern": ".safetensors",
+      "verdict": "discretion",
+      "label": "AI model",
+      "reason": "Neural-net weights — NOT junk. Large; re-downloadable, but delete only if you're sure the app doesn't need the model.",
+      "priority": 360
+    },
+    {
+      "pattern": ".gguf",
+      "verdict": "discretion",
+      "label": "AI model (GGUF)",
+      "reason": "Model weights in GGUF format. Not junk; delete deliberately.",
+      "priority": 358
+    },
+    {
+      "pattern": ".ckpt",
+      "verdict": "discretion",
+      "label": "AI model (checkpoint)",
+      "reason": "Model checkpoint. Not junk; delete deliberately.",
+      "priority": 356
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & safety tests (macOS · Apple Silicon)
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select newest Xcode
+        run: |
+          latest=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          echo "Selecting $latest"
+          sudo xcode-select -s "$latest/Contents/Developer"
+          swiftc --version
+
+      - name: Compile app + helper (unsigned CI build)
+        working-directory: native
+        run: |
+          set -euo pipefail
+          mkdir -p build/MacCleaner.app/Contents/MacOS
+          # Main app (no code signing in CI — proves it compiles cleanly).
+          swiftc -O -parse-as-library \
+            -framework SwiftUI -framework AppKit -framework IOKit -framework ServiceManagement \
+            -o build/MacCleaner.app/Contents/MacOS/MacCleaner \
+            Sources/*.swift Sources/Shared/*.swift
+          # Privileged helper (Foundation only).
+          swiftc -O \
+            -o build/MacCleaner.app/Contents/MacOS/com.maccleaner.helper \
+            Sources/Helper/*.swift Sources/Shared/*.swift Sources/SafetyPolicy.swift
+          echo "✓ Compiled app + helper"
+
+      - name: Run safety-core test suite
+        working-directory: native
+        run: ./test.sh
